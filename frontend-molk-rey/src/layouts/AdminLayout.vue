@@ -20,7 +20,6 @@ const navItems = [
 
 <template>
   <div class="flex min-h-screen bg-secondary/40" dir="rtl">
-    <!-- Drawer موبایل -->
     <Transition name="fade">
       <div
         v-if="isDrawerOpen"
@@ -50,14 +49,15 @@ const navItems = [
       </div>
 
       <nav class="space-y-1">
-        <a
+        <router-link
           v-for="item in navItems"
           :key="item.key"
-          :href="item.to"
+          :to="item.to"
           class="block rounded-control px-3 py-2 text-sm text-ink/80 transition hover:bg-secondary"
+          active-class="bg-secondary text-primary"
         >
           {{ item.label }}
-        </a>
+        </router-link>
       </nav>
     </aside>
 
@@ -70,7 +70,7 @@ const navItems = [
       </header>
 
       <main class="p-4 sm:p-6">
-        <slot />
+        <router-view />
       </main>
     </div>
   </div>
