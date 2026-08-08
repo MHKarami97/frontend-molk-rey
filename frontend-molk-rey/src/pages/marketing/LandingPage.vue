@@ -66,7 +66,7 @@ const testimonials = [
       </p>
       <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
         <router-link
-          to="/resident/home"
+          to="/login"
           class="rounded-control bg-primary px-6 py-3 text-sm text-white transition hover:bg-primary-dark"
         >
           شروع رایگان

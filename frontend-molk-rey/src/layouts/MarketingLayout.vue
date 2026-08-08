@@ -32,7 +32,7 @@ const navItems = [
 
         <div class="hidden items-center gap-2 sm:flex">
           <router-link
-            to="/resident/home"
+            to="/login"
             class="rounded-control border border-surface-border px-4 py-1.5 text-sm text-ink/80 hover:bg-secondary"
           >
             ورود
@@ -53,7 +53,7 @@ const navItems = [
           {{ item.label }}
         </a>
         <router-link
-          to="/resident/home"
+          to="/login"
           class="mt-1 rounded-control bg-primary px-3 py-2 text-center text-sm text-white"
         >
           ورود
