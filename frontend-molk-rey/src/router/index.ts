@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 const AdminLayout = () => import('../layouts/AdminLayout.vue');
 const ResidentLayout = () => import('../layouts/ResidentLayout.vue');
 const MarketingLayout = () => import('../layouts/MarketingLayout.vue');
+const PlatformLayout = () => import('../layouts/PlatformLayout.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +30,7 @@ const router = createRouter({
         { path: 'notices', component: () => import('../pages/admin/NoticesManagement.vue') },
         { path: 'polls', component: () => import('../pages/admin/PollsManagement.vue') },
         { path: 'receipts', component: () => import('../pages/admin/ReceiptsReviewPage.vue') },
+        { path: 'subscription', component: () => import('../pages/admin/SubscriptionManagement.vue') },
       ],
     },
     {
@@ -42,6 +44,14 @@ const router = createRouter({
         { path: 'notices', component: () => import('../pages/resident/NoticesFeed.vue') },
         { path: 'facilities', component: () => import('../pages/resident/FacilityReservation.vue') },
         { path: 'polls', component: () => import('../pages/resident/PollsAndVoting.vue') },
+      ],
+    },
+    {
+      path: '/platform',
+      component: PlatformLayout,
+      children: [
+        { path: '', redirect: '/platform/subscriptions' },
+        { path: 'subscriptions', component: () => import('../pages/platform/PlatformSubscriptionReview.vue') },
       ],
     },
   ],
