@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 // نام ریپازیتوری GitHub برای base path صحیح روی GitHub Pages
 // (GitHub Pages پروژه را زیر /molk-rey/ سرو می‌کند، نه روی روت دامنه)
-const REPO_BASE_PATH = '/molk-rey/';
+const REPO_BASE_PATH = '/';
 
 export default defineConfig({
   base: REPO_BASE_PATH,
@@ -13,8 +13,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'fonts/*.woff2'],
-
+      includeAssets: ['/icons/*', 'fonts/*.woff2'],
       manifest: {
         id: '/molk-rey/',
         name: 'ملک ری',
@@ -29,10 +28,14 @@ export default defineConfig({
         theme_color: '#B5502F',
         background_color: '#F2E9DE',
         icons: [
+          { src: 'icons/icon-48.png', sizes: '192x192', type: 'image/png' },
+          { src: 'icons/icon-72.png', sizes: '192x192', type: 'image/png' },
+          { src: 'icons/icon-96.png', sizes: '192x192', type: 'image/png' },
+          { src: 'icons/icon-144.png', sizes: '192x192', type: 'image/png' },
           { src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png' },
           {
-            src: 'icons/icon-maskable-512.png',
+            src: 'icons/icon-512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',
@@ -42,14 +45,14 @@ export default defineConfig({
           {
             name: 'پرداخت شارژ',
             short_name: 'پرداخت',
-            url: '/molk-rey/resident/bills',
-            icons: [{ src: 'icons/shortcut-bills.png', sizes: '96x96' }],
+            url: '/resident/bills',
+            icons: [{ src: 'icons/icon-96.png', sizes: '96x96' }],
           },
           {
             name: 'ثبت درخواست تعمیر',
             short_name: 'تعمیرات',
-            url: '/molk-rey/resident/maintenance',
-            icons: [{ src: 'icons/shortcut-maintenance.png', sizes: '96x96' }],
+            url: '/resident/maintenance',
+            icons: [{ src: 'icons/icon-96.png', sizes: '96x96' }],
           },
         ],
       },
