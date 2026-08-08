@@ -2,10 +2,21 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 const AdminLayout = () => import('../layouts/AdminLayout.vue');
 const ResidentLayout = () => import('../layouts/ResidentLayout.vue');
+const MarketingLayout = () => import('../layouts/MarketingLayout.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/',
+      component: MarketingLayout,
+      children: [
+        { path: '', component: () => import('../pages/marketing/LandingPage.vue') },
+        { path: 'about', component: () => import('../pages/marketing/AboutPage.vue') },
+        { path: 'contact', component: () => import('../pages/marketing/ContactPage.vue') },
+        { path: 'help', component: () => import('../pages/marketing/HelpPage.vue') },
+      ],
+    },
     {
       path: '/admin',
       component: AdminLayout,
@@ -33,7 +44,6 @@ const router = createRouter({
         { path: 'polls', component: () => import('../pages/resident/PollsAndVoting.vue') },
       ],
     },
-    { path: '/', redirect: '/resident/home' },
   ],
 });
 
