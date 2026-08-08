@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ملک ری — بدون اتصال</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #F2E9DE;
+      color: #2B2521;
+      font-family: 'Vazirmatn Variable', sans-serif;
+      text-align: center;
+      padding: 24px;
+    }
+    .card {
+      max-width: 360px;
+      background: #FFFFFF;
+      border: 1px solid #E4D9C9;
+      border-radius: 8px;
+      padding: 32px 24px;
+    }
+    .icon { font-size: 40px; margin-bottom: 12px; }
+    h1 { font-size: 18px; margin: 0 0 8px; }
+    p { font-size: 14px; color: rgba(43, 37, 33, 0.7); line-height: 1.8; margin: 0 0 20px; }
+    button {
+      background-color: #B5502F;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      font-family: inherit;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button:hover { background-color: #8F3D22; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">📡</div>
+    <h1>اتصال اینترنت برقرار نیست</h1>
+    <p>به نظر می‌رسد به اینترنت متصل نیستید. لطفاً اتصال خود را بررسی کنید و دوباره تلاش کنید.</p>
+    <button onclick="window.location.reload()">تلاش مجدد</button>
+  </div>
+</body>
+</html>

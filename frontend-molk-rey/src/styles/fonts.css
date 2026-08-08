@@ -1,0 +1,48 @@
+@font-face {
+  font-family: 'Vazirmatn Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/vazirmatn/files/vazirmatn-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Vazirmatn Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/vazirmatn/files/vazirmatn-arabic-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+:root {
+  --font-family-base: 'Vazirmatn Variable', sans-serif;
+  --fw-body: 400;
+  --fw-label: 500;
+  --fw-heading: 700;
+  --fw-hero: 900;
+}
+
+html {
+  font-family: var(--font-family-base);
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-weight: var(--fw-body);
+  color: #2B2521;
+  background-color: #F2E9DE;
+}
+
+.text-label {
+  font-weight: var(--fw-label);
+}
+
+.text-heading {
+  font-weight: var(--fw-heading);
+}
+
+.text-hero {
+  font-weight: var(--fw-hero);
+}
