@@ -57,6 +57,8 @@ async function decide(receiptId: string, decision: 'confirmed' | 'rejected', rev
   if (index === -1) return;
 
   const removedItem = items.value[index];
+  if (!removedItem) return;
+
   items.value.splice(index, 1);
   isSubmitting.value = true;
 
@@ -152,7 +154,6 @@ function submitReject() {
       نمایش موارد بیشتر
     </button>
 
-    <!-- Lightbox پیش‌نمایش تصویر بزرگ -->
     <Teleport to="body">
       <Transition name="fade">
         <div
@@ -165,7 +166,6 @@ function submitReject() {
       </Transition>
     </Teleport>
 
-    <!-- Modal فرم یادداشت رد -->
     <Teleport to="body">
       <Transition name="fade">
         <div

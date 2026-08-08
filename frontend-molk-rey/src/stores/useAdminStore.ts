@@ -26,8 +26,9 @@ export const useAdminStore = defineStore('admin', () => {
     isLoading.value = true;
     try {
       buildings.value = await apiFetch<Building[]>('/admin/buildings');
-      if (!selectedBuildingId.value && buildings.value.length > 0) {
-        selectedBuildingId.value = buildings.value[0].id;
+      const firstBuilding = buildings.value[0];
+      if (!selectedBuildingId.value && firstBuilding) {
+        selectedBuildingId.value = firstBuilding.id;
       }
     } finally {
       isLoading.value = false;

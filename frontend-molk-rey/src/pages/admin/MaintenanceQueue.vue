@@ -41,8 +41,12 @@ watch(filterStatus, load);
 async function updateStatus(id: string, status: MaintenanceRequest['status']) {
   const index = items.value.findIndex((item) => item.id === id);
   if (index === -1) return;
-  const previous = items.value[index].status;
-  items.value[index].status = status;
+
+  const target = items.value[index];
+  if (!target) return;
+
+  const previous = target.status;
+  target.status = status;
 
   try {
     await apiFetch(`/admin/maintenance-requests/${id}`, {
@@ -50,7 +54,7 @@ async function updateStatus(id: string, status: MaintenanceRequest['status']) {
       body: JSON.stringify({ status }),
     });
   } catch (e) {
-    items.value[index].status = previous;
+    target.status = previous;
     error.value = e instanceof ApiError ? e.message : 'به‌روزرسانی وضعیت ناموفق بود.';
   }
 }

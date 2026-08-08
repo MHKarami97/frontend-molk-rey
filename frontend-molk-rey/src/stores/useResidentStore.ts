@@ -30,8 +30,9 @@ export const useResidentStore = defineStore('resident', () => {
     try {
       units.value = await apiFetch<ResidentUnit[]>('/resident/units');
       const stillValid = units.value.some((u) => u.id === activeUnitId.value);
-      if (!stillValid && units.value.length > 0) {
-        activeUnitId.value = units.value[0].id;
+      const firstUnit = units.value[0];
+      if (!stillValid && firstUnit) {
+        activeUnitId.value = firstUnit.id;
       }
     } finally {
       isLoading.value = false;
