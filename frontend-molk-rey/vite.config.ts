@@ -55,25 +55,15 @@ export default defineConfig({
         ],
       },
 
-      workbox: {
-        // صفحه آفلاین اختصاصی به‌جای صفحه پیش‌فرض مرورگر، وقتی هیچ صفحه‌ای
-        // در Cache موجود نیست و شبکه هم قطع است.
+       workbox: {
         navigateFallback: `${REPO_BASE_PATH}index.html`,
         navigateFallbackDenylist: [/^\/api\//],
 
         runtimeCaching: [
-          // NetworkFirst برای API: همیشه تلاش برای شبکه، fallback به Cache در آفلاین
           {
             urlPattern: ({ url }) => url.pathname.startsWith('/api/'),
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'molk-rey-api-cache',
-              networkTimeoutSeconds: 5,
-              expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 6 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
+            handler: 'NetworkOnly',
           },
-          // CacheFirst برای فونت Vazirmatn (Immutable، تغییر نمی‌کند)
           {
             urlPattern: ({ url }) => /\.woff2?$/.test(url.pathname),
             handler: 'CacheFirst',
@@ -83,7 +73,6 @@ export default defineConfig({
               cacheableResponse: { statuses: [0, 200] },
             },
           },
-          // CacheFirst برای تصاویر/آیکون‌های استاتیک
           {
             urlPattern: ({ request }) => request.destination === 'image',
             handler: 'CacheFirst',
@@ -93,8 +82,6 @@ export default defineConfig({
               cacheableResponse: { statuses: [0, 200] },
             },
           },
-          // StaleWhileRevalidate برای صفحات HTML اصلی: نمایش سریع نسخه Cache
-          // شده، در پس‌زمینه به‌روزرسانی می‌شود.
           {
             urlPattern: ({ request }) => request.mode === 'navigate',
             handler: 'StaleWhileRevalidate',
