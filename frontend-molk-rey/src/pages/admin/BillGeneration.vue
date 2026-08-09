@@ -174,7 +174,7 @@ const totalAmount = () => preview.value.reduce((sum, row) => sum + row.amount, 0
 
       <div class="space-y-2 sm:hidden">
         <div v-for="row in preview" :key="row.unitId" class="rounded-card border border-surface-border bg-surface p-3">
-          <p class="text-ink">طبقه {{ row.floor }} — {{ row.area }} متر</p>
+          <p class="text-ink">طبقه {{ row.floor }} - {{ row.area }} متر</p>
           <p class="text-hero text-primary">{{ row.amount.toLocaleString('fa-IR') }} تومان</p>
         </div>
       </div>

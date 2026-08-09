@@ -15,7 +15,7 @@ const { isInstallable, promptInstall, dismiss } = useInstallPrompt();
         <p class="mt-0.5 text-xs text-ink/60">برای دسترسی سریع‌تر، این اپلیکیشن را روی دستگاه خود نصب کنید.</p>
       </div>
       <div class="flex shrink-0 gap-2">
-        <button class="text-xs text-ink/50" @click="dismiss">بعداً</button>
+        <button class="text-xs text-ink/50" @click="dismiss">بعدا</button>
         <button
           class="rounded-control bg-primary px-3 py-1.5 text-xs text-white hover:bg-primary-dark"
           @click="promptInstall"

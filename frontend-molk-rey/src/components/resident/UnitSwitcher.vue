@@ -12,7 +12,7 @@ const store = useResidentStore();
       @change="store.setActiveUnit(($event.target as HTMLSelectElement).value)"
     >
       <option v-for="unit in store.units" :key="unit.id" :value="unit.id">
-        {{ unit.buildingName }} — طبقه {{ unit.floor }} ({{ unit.relation === 'owner' ? 'مالک' : 'ساکن' }})
+        {{ unit.buildingName }} - طبقه {{ unit.floor }} ({{ unit.relation === 'owner' ? 'مالک' : 'ساکن' }})
       </option>
     </select>
   </div>

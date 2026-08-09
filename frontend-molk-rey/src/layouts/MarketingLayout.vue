@@ -17,7 +17,10 @@ const navItems = [
   <div class="min-h-screen bg-secondary/40" dir="rtl">
     <header class="sticky top-0 z-40 border-b border-surface-border bg-surface/95 backdrop-blur">
       <div class="mx-auto flex max-w-6xl items-center justify-between p-4">
-        <router-link to="/" class="text-heading text-primary">ملک‌ری</router-link>
+        <router-link to="/" class="text-heading text-primary flex items-center">
+          <img src="/icons/icon-72.png" alt="ملک‌ری" class="h-12 w-12" />
+          <span class="mt-1">ملک‌ری</span>
+        </router-link>
 
         <!-- اصلاح حیاتی: قبلاً <a href> بود که باعث Reload کامل صفحه
         می‌شد؛ router-link از History API استفاده می‌کند و SPA را در
@@ -83,7 +86,7 @@ const navItems = [
     </main>
 
     <footer class="border-t border-surface-border bg-surface p-6 text-center text-xs text-ink/50">
-      <p>© {{ new Date().getFullYear() }} ملک‌ری — سامانه مدیریت ساختمان</p>
+      <p>© {{ new Date().getFullYear() }} ملک‌ری - سامانه مدیریت ساختمان | طراحی توسط <a href="https://mhkarami97.ir">mhkarami97.ir</a></p>
       <div class="mt-2 flex justify-center gap-4">
         <router-link to="/about" class="hover:text-primary">درباره ما</router-link>
         <router-link to="/help" class="hover:text-primary">راهنما</router-link>

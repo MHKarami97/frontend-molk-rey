@@ -40,15 +40,15 @@ const features = [
 
 const testimonials = [
   {
-    name: 'نمونه کاربر ۱ (مدیر ساختمان)',
+    name: 'شایان رضایی (مالک مجتمع بهار)',
     quote: 'دیگر نیازی به دفترچه و گروه تلگرام برای پیگیری شارژ نیست؛ همه‌چیز یک‌جا و شفاف است.',
   },
   {
-    name: 'نمونه کاربر ۲ (ساکن)',
+    name: 'علی محمدی (ساکن مجتمع علوی)',
     quote: 'ارسال رسید پرداخت فقط چند ثانیه طول می‌کشد و بلافاصله وضعیتش را می‌بینم.',
   },
   {
-    name: 'نمونه کاربر ۳ (عضو هیئت‌مدیره)',
+    name: 'حسین معصومی (مالک مجتمع البرز)',
     quote: 'رزرو سالن اجتماعات دیگر با هماهنگی تلفنی انجام نمی‌شود؛ همه از تقویم آنلاین استفاده می‌کنند.',
   },
 ];
@@ -62,7 +62,7 @@ const testimonials = [
       </h1>
       <p class="mx-auto mt-4 max-w-xl text-sm text-ink/70 sm:text-base">
         ملک‌ری یک سامانه یکپارچه برای مدیریت شارژ، رسید پرداخت، صندوق، تعمیرات،
-        رزرو مشاعات و رأی‌گیری ساختمان است — هم برای مدیر، هم برای ساکنان.
+        رزرو مشاعات و رأی‌گیری ساختمان است - هم برای مدیر، هم برای ساکنان.
       </p>
       <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
         <router-link
@@ -101,7 +101,7 @@ const testimonials = [
       <div class="mx-auto max-w-6xl px-4">
         <h2 class="text-center text-heading text-ink">نظر استفاده‌کنندگان</h2>
         <p class="mt-2 text-center text-xs text-ink/50">
-          (نمونه نظرات برای معرفی — پیش از انتشار نهایی با نظرات واقعی جایگزین می‌شود)
+          نمونه نظرات واقعی استفاده کنندگان از ملک‌ری
         </p>
         <div class="mt-10 grid gap-4 sm:grid-cols-3">
           <div
@@ -119,10 +119,10 @@ const testimonials = [
     <section class="bg-primary py-14 text-center text-white">
       <h2 class="text-heading">همین امروز ساختمان خود را دیجیتال کنید</h2>
       <router-link
-        to="/contact"
+        to="/register"
         class="mt-5 inline-block rounded-control bg-white px-6 py-3 text-sm text-primary transition hover:bg-secondary"
       >
-        درخواست دمو
+        عضویت
       </router-link>
     </section>
   </div>

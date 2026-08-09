@@ -41,7 +41,7 @@ interface UploadUrlResponse {
 }
 
 /**
- * useReceiptUpload: کل چرخه آپلود رسید — فشرده‌سازی → دریافت Presigned URL →
+ * useReceiptUpload: کل چرخه آپلود رسید - فشرده‌سازی → دریافت Presigned URL →
  * PUT مستقیم به R2 → Confirm-upload. با پشتیبانی Retry روی مرحله آپلود.
  */
 export function useReceiptUpload(billId: string) {

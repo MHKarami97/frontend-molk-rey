@@ -21,7 +21,7 @@ onUnmounted(() => {
 <template>
   <Transition name="fade">
     <div v-if="!isOnline" class="w-full bg-warning/10 py-1.5 text-center text-xs text-warning">
-      آفلاین — برخی اطلاعات ممکن است به‌روز نباشد
+      آفلاین - برخی اطلاعات ممکن است به‌روز نباشد
     </div>
   </Transition>
 </template>

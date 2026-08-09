@@ -16,7 +16,7 @@ const STORAGE_KEY = 'molk_rey_active_unit_id';
 /**
  * useResidentStore: چون یک کاربر می‌تواند هم‌زمان مالک/ساکن چند واحد باشد،
  * انتخاب «واحد فعال» در Frontend نگهداری و در localStorage Persist می‌شود
- * (طبق الزام صریح مرحله ۵ — نه در Backend Session).
+ * (طبق الزام صریح مرحله ۵ - نه در Backend Session).
  */
 export const useResidentStore = defineStore('resident', () => {
   const units = ref<ResidentUnit[]>([]);

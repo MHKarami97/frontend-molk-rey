@@ -115,7 +115,7 @@ function submitReject() {
         </button>
 
         <div class="min-w-0 flex-1">
-          <p class="text-heading text-ink">{{ item.uploaderName ?? 'ناشناس' }} — واحد طبقه {{ item.unitFloor }}</p>
+          <p class="text-heading text-ink">{{ item.uploaderName ?? 'ناشناس' }} - واحد طبقه {{ item.unitFloor }}</p>
           <p class="text-xs text-ink/60">مبلغ: {{ item.billAmount.toLocaleString('fa-IR') }} تومان</p>
         </div>
 

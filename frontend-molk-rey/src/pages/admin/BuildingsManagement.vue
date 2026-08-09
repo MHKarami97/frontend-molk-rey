@@ -147,7 +147,7 @@ async function confirmDelete() {
     <!-- Card موبایل -->
     <div v-if="units.length > 0" class="space-y-2 sm:hidden">
       <div v-for="unit in units" :key="unit.id" class="rounded-card border border-surface-border bg-surface p-3">
-        <p class="text-heading text-ink">طبقه {{ unit.floor }} — {{ unit.area }} متر</p>
+        <p class="text-heading text-ink">طبقه {{ unit.floor }} - {{ unit.area }} متر</p>
         <p class="mt-1 text-xs text-ink/60">
           مالک: {{ unit.ownerName }} <span dir="ltr">({{ unit.ownerPhone }})</span>
         </p>

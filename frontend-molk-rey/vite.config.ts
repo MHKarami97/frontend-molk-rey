@@ -21,8 +21,7 @@ export default defineConfig({
         dir: 'rtl',
         start_url: REPO_BASE_PATH,
         scope: REPO_BASE_PATH,
-        display: 'standalone',
-        // پالت Structured Warmth مرحله ۱ — بدون رنگ جدید
+        display: 'standalone',      
         theme_color: '#B5502F',
         background_color: '#F2E9DE',
         icons: [
