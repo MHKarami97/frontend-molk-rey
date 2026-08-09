@@ -5,7 +5,7 @@ import {
   jalaliToGregorian,
   daysInJalaliMonth,
   PERSIAN_MONTHS,
-} from "../../lib/jalali";
+} from "../lib/jalali";
 const props = defineProps<{ modelValue: string }>();
 const emit = defineEmits<{ (e: "update:modelValue", value: string): void }>();
 const now = toJalali(new Date());
