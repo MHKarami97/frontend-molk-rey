@@ -61,7 +61,7 @@ const testimonials = [
         مدیریت ساختمان، <span class="text-primary">ساده و شفاف</span>
       </h1>
       <p class="mx-auto mt-4 max-w-xl text-sm text-ink/70 sm:text-base">
-        ملک ری یک سامانه یکپارچه برای مدیریت شارژ، رسید پرداخت، صندوق، تعمیرات،
+        ملک‌ری یک سامانه یکپارچه برای مدیریت شارژ، رسید پرداخت، صندوق، تعمیرات،
         رزرو مشاعات و رأی‌گیری ساختمان است — هم برای مدیر، هم برای ساکنان.
       </p>
       <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">

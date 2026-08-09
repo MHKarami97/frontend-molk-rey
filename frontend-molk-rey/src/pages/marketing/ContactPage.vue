@@ -49,7 +49,7 @@ async function submit() {
   <div class="mx-auto max-w-xl px-4 py-14">
     <h1 class="text-hero text-ink">تماس با ما</h1>
     <p class="mt-3 text-sm text-ink/70">
-      سؤالی درباره ملک ری دارید یا می‌خواهید برای ساختمان خود دمو بگیرید؟ فرم زیر را پر کنید.
+      سؤالی درباره ملک‌ری دارید یا می‌خواهید برای ساختمان خود دمو بگیرید؟ فرم زیر را پر کنید.
     </p>
 
     <form v-if="!isSubmitted" class="mt-8 space-y-4" @submit.prevent="submit">

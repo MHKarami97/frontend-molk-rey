@@ -14,9 +14,9 @@ export default defineConfig({
       includeAssets: ['/icons/*', 'fonts/*.woff2'],
       manifest: {
         id: 'molk-rey',
-        name: 'ملک ری',
-        short_name: 'ملک ری',
-        description: 'اپلیکیشن مدیریت ساختمان ملک ری',
+        name: 'ملک‌ری',
+        short_name: 'ملک‌ری',
+        description: 'اپلیکیشن مدیریت ساختمان ملک‌ری',
         lang: 'fa',
         dir: 'rtl',
         start_url: REPO_BASE_PATH,

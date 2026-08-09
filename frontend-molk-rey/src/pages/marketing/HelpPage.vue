@@ -34,7 +34,7 @@ function toggle(index: number) {
 <template>
   <div class="mx-auto max-w-2xl px-4 py-14">
     <h1 class="text-hero text-ink">راهنما</h1>
-    <p class="mt-3 text-sm text-ink/70">پاسخ سؤالات پرتکرار درباره استفاده از ملک ری.</p>
+    <p class="mt-3 text-sm text-ink/70">پاسخ سؤالات پرتکرار درباره استفاده از ملک‌ری.</p>
 
     <div class="mt-8 space-y-2">
       <div v-for="(faq, index) in faqs" :key="faq.q" class="rounded-card border border-surface-border bg-surface">

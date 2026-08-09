@@ -23,7 +23,7 @@ const desktopNavItems = [
 <template>
   <div class="min-h-screen bg-secondary/40 pb-20 sm:pb-0" dir="rtl">
     <header class="hidden border-b border-surface-border bg-surface p-4 sm:flex sm:items-center sm:justify-between">
-      <p class="text-heading text-primary">ملک ری</p>
+      <p class="text-heading text-primary">ملک‌ری</p>
       <nav class="flex gap-4">
         <router-link
           v-for="item in desktopNavItems"

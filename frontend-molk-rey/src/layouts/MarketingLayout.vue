@@ -17,7 +17,7 @@ const navItems = [
   <div class="min-h-screen bg-secondary/40" dir="rtl">
     <header class="sticky top-0 z-40 border-b border-surface-border bg-surface/95 backdrop-blur">
       <div class="mx-auto flex max-w-6xl items-center justify-between p-4">
-        <router-link to="/" class="text-heading text-primary">ملک ری</router-link>
+        <router-link to="/" class="text-heading text-primary">ملک‌ری</router-link>
 
         <nav class="hidden gap-6 sm:flex">
           <a
@@ -66,7 +66,7 @@ const navItems = [
     </main>
 
     <footer class="border-t border-surface-border bg-surface p-6 text-center text-xs text-ink/50">
-      <p>© {{ new Date().getFullYear() }} ملک ری — سامانه مدیریت ساختمان</p>
+      <p>© {{ new Date().getFullYear() }} ملک‌ری — سامانه مدیریت ساختمان</p>
       <div class="mt-2 flex justify-center gap-4">
         <router-link to="/about" class="hover:text-primary">درباره ما</router-link>
         <router-link to="/help" class="hover:text-primary">راهنما</router-link>

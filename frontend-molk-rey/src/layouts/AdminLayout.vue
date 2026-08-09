@@ -34,7 +34,7 @@ const navItems = [
       :class="isDrawerOpen ? 'translate-x-0' : 'translate-x-full sm:translate-x-0'"
     >
       <div class="mb-6 flex items-center justify-between">
-        <p class="text-heading text-primary">ملک ری</p>
+        <p class="text-heading text-primary">ملک‌ری</p>
         <button class="sm:hidden" @click="isDrawerOpen = false">✕</button>
       </div>
 
@@ -64,7 +64,7 @@ const navItems = [
 
     <div class="flex-1">
       <header class="flex items-center justify-between border-b border-surface-border bg-surface p-4 sm:hidden">
-        <p class="text-heading text-primary">ملک ری</p>
+        <p class="text-heading text-primary">ملک‌ری</p>
         <button class="rounded-control border border-surface-border px-3 py-1.5 text-sm" @click="isDrawerOpen = true">
           منو
         </button>

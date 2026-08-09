@@ -32,7 +32,7 @@ async function submit() {
 <template>
   <div class="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-4" dir="rtl">
     <div class="rounded-card border border-surface-border bg-surface p-6">
-      <p class="text-hero text-primary">ملک ری</p>
+      <p class="text-hero text-primary">ملک‌ری</p>
       <p class="mt-1 text-sm text-ink/60">ورود به حساب کاربری</p>
 
       <form class="mt-6 space-y-4" @submit.prevent="submit">
