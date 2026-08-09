@@ -59,6 +59,7 @@ async function submit() {
         <input
           v-model="name"
           placeholder="نام و نام خانوادگی"
+          autocomplete="name"
           class="w-full rounded-control border border-surface-border p-3 text-sm"
           required
         />
@@ -66,6 +67,7 @@ async function submit() {
           v-model="phone"
           type="tel"
           placeholder="شماره تلفن (مثلاً 09123456789)"
+          autocomplete="tel"
           class="w-full rounded-control border border-surface-border p-3 text-sm"
           required
         />
@@ -73,6 +75,7 @@ async function submit() {
           v-model="password"
           type="password"
           placeholder="رمز عبور (حداقل ۸ کاراکتر)"
+          autocomplete="new-password"
           class="w-full rounded-control border border-surface-border p-3 text-sm"
           required
           minlength="8"

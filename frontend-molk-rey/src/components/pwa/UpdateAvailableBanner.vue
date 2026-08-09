@@ -22,16 +22,6 @@ const { needRefresh, offlineReady, applyUpdate, dismissOfflineReady } = usePwaUp
       </button>
     </div>
   </Transition>
-
-  <Transition name="slide-up">
-    <div
-      v-if="offlineReady"
-      class="fixed inset-x-4 bottom-4 z-50 flex items-center justify-between gap-3 rounded-card border border-success/30 bg-success/5 p-4 shadow-overlay sm:inset-x-auto sm:left-4 sm:max-w-sm"
-    >
-      <p class="text-sm text-success">اپلیکیشن آماده استفاده آفلاین است.</p>
-      <button class="text-xs text-ink/50" @click="dismissOfflineReady">باشه</button>
-    </div>
-  </Transition>
 </template>
 
 <style scoped>
