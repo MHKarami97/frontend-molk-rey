@@ -8,12 +8,6 @@ const isSubmitting = ref(false);
 const isSubmitted = ref(false);
 const error = ref<string | null>(null);
 
-/**
- * ارسال به Formspree با fetch (نه <form action> با Redirect کامل صفحه)
- * تا در همان SPA به‌صورت Ajax پاسخ بگیریم و وضعیت موفقیت/خطا را با UI
- * طراحی مرحله ۱ نمایش دهیم. هدر Accept: application/json باعث می‌شود
- * Formspree به‌جای Redirect به صفحه Thank You خودش، پاسخ JSON برگرداند.
- */
 async function submit() {
   isSubmitting.value = true;
   error.value = null;
