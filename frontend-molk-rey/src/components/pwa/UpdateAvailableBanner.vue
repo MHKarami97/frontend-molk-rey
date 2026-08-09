@@ -8,7 +8,7 @@ const { needRefresh, offlineReady, applyUpdate, dismissOfflineReady } = usePwaUp
   <Transition name="slide-up">
     <div
       v-if="needRefresh"
-      class="fixed inset-x-4 bottom-4 z-50 flex items-center justify-between gap-3 rounded-card border border-surface-border bg-surface p-4 shadow-overlay sm:inset-x-auto sm:left-4 sm:max-w-sm"
+      class="fixed inset-x-4 bottom-4 z-50 flex items-center justify-between gap-3 rounded-card border border-surface-border bg-surface p-4 shadow-overlay sm:inset-x-auto sm:right-4 sm:max-w-sm"
     >
       <div class="min-w-0">
         <p class="text-heading text-ink">نسخه جدید موجود است</p>

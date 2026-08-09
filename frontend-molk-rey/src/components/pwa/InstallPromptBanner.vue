@@ -8,7 +8,7 @@ const { isInstallable, promptInstall, dismiss } = useInstallPrompt();
   <Transition name="slide-up">
     <div
       v-if="isInstallable"
-      class="fixed inset-x-4 bottom-4 z-50 flex items-center justify-between gap-3 rounded-card border border-surface-border bg-surface p-4 shadow-overlay sm:inset-x-auto sm:left-4 sm:max-w-sm"
+      class="fixed inset-x-4 bottom-4 z-50 flex items-center justify-between gap-3 rounded-card border border-surface-border bg-surface p-4 shadow-overlay sm:inset-x-auto sm:right-4 sm:max-w-sm"
     >
       <div class="min-w-0">
         <p class="text-heading text-ink">نصب ملک‌ری</p>
