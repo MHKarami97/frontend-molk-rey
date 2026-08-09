@@ -30,8 +30,8 @@ const HOURS = Array.from({ length: 14 }, (_, i) => 8 + i); // ۸ صبح تا ۲�
 async function loadFacilities() {
   if (!store.activeUnit) return;
   facilities.value = await apiFetch<Facility[]>(`/resident/facilities?buildingId=${store.activeUnit.buildingId}`);
-  if (!selectedFacilityId.value && facilities.value.length > 0) {
-    selectedFacilityId.value = facilities.value[0].id;
+  if (!selectedFacilityId.value) {
+    selectedFacilityId.value = facilities.value[0]?.id ?? null;
   }
 }
 

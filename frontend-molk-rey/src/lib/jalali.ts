@@ -1,8 +1,12 @@
 /**
  * jalali.ts: تبدیل دوطرفه تقویم میلادی <-> شمسی، بدون وابستگی به کتابخانه
  * خارجی. الگوریتم استاندارد مبتنی بر Julian Day Number (همان الگوریتم
- * معتبر کتابخانه‌های شناخته‌شده مثل jalaali-js) - تست‌شده و دقیق، بدون
- * حلقه حدس‌وخطا.
+ * معتبر کتابخانه‌های شناخته‌شده مثل jalaali-js) - تست‌شده و دقیق.
+ *
+ * نکته noUncheckedIndexedAccess: چون tsconfig.json این پرچم را فعال کرده،
+ * TypeScript هر Index Access روی آرایه را احتمالاً undefined در نظر می‌گیرد. در
+ * نقاطی که صحت Index از قبل با منطق کد (نه فقط شانس) تضمین شده (مثل BREAKS
+ * که همیشه در بازه‌ی مجاز پیمایش می‌شود)، از عملگر `!` استفاده شده.
  */
 function div(a: number, b: number): number {
   return Math.trunc(a / b);
@@ -20,13 +24,13 @@ function jalCal(jy: number): { leap: number; gy: number; march: number } {
   const bl = BREAKS.length;
   const gy = jy + 621;
   let leapJ = -14;
-  let jp = BREAKS[0];
-  if (jy < jp || jy >= BREAKS[bl - 1]) {
+  let jp = BREAKS[0]!;
+  if (jy < jp || jy >= BREAKS[bl - 1]!) {
     throw new Error(`سال شمسی نامعتبر: ${jy}`);
   }
   let jump = 0;
   for (let i = 1; i < bl; i += 1) {
-    const jm = BREAKS[i];
+    const jm = BREAKS[i]!;
     jump = jm - jp;
     if (jy < jm) break;
     leapJ = leapJ + div(jump, 33) * 8 + div(mod(jump, 33), 4);
@@ -136,4 +140,9 @@ export function toIsoDateString(date: Date): string {
 export function formatJalali(date: Date): string {
   const { jy, jm, jd } = toJalali(date);
   return `${jy}/${String(jm).padStart(2, '0')}/${String(jd).padStart(2, '0')}`;
+}
+
+/** نام ماه شمسی بر اساس شماره (۱ تا ۱۲)، با تضمین عدم undefined در خروجی. */
+export function jalaliMonthName(jm: number): string {
+  return PERSIAN_MONTHS[jm - 1] ?? '';
 }
