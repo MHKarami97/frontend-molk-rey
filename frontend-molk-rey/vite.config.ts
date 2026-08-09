@@ -2,8 +2,6 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { VitePWA } from 'vite-plugin-pwa';
 
-// نام ریپازیتوری GitHub برای base path صحیح روی GitHub Pages
-// (GitHub Pages پروژه را زیر /molk-rey/ سرو می‌کند، نه روی روت دامنه)
 const REPO_BASE_PATH = '/';
 
 export default defineConfig({
@@ -15,7 +13,7 @@ export default defineConfig({
       injectRegister: 'auto',
       includeAssets: ['/icons/*', 'fonts/*.woff2'],
       manifest: {
-        id: '/molk-rey/',
+        id: 'molk-rey',
         name: 'ملک ری',
         short_name: 'ملک ری',
         description: 'اپلیکیشن مدیریت ساختمان ملک ری',
