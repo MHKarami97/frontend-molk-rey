@@ -68,7 +68,7 @@ async function submit() {
           type="tel"
           placeholder="شماره تلفن (مثلاً 09123456789)"
           autocomplete="tel"
-          class="w-full rounded-control border border-surface-border p-3 text-sm"
+          class="w-full rounded-control border border-surface-border p-3 text-sm text-right"
           required
         />
         <input
