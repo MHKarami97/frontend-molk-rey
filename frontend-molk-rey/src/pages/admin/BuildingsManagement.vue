@@ -19,7 +19,7 @@ const isLoading = ref(true);
 const error = ref<string | null>(null);
 
 const showBuildingForm = ref(false);
-const buildingForm = ref({ name: '', address: '', totalUnits: 1 });
+const buildingForm = ref({ name: '', address: '', totalUnits: '' });
 
 const showUnitForm = ref(false);
 const unitForm = ref({ area: 50, floor: 1, ownerPhone: '', ownerName: '', ownerPassword: '' });

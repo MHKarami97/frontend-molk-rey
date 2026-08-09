@@ -43,6 +43,7 @@ const router = createRouter({
         { path: 'polls', component: () => import('../pages/admin/PollsManagement.vue') },
         { path: 'receipts', component: () => import('../pages/admin/ReceiptsReviewPage.vue') },
         { path: 'subscription', component: () => import('../pages/admin/SubscriptionManagement.vue') },
+        { path: 'profile', component: () => import('../pages/common/ProfilePage.vue') },
       ],
     },
     {
@@ -57,6 +58,7 @@ const router = createRouter({
         { path: 'notices', component: () => import('../pages/resident/NoticesFeed.vue') },
         { path: 'facilities', component: () => import('../pages/resident/FacilityReservation.vue') },
         { path: 'polls', component: () => import('../pages/resident/PollsAndVoting.vue') },
+        { path: 'profile', component: () => import('../pages/common/ProfilePage.vue') },
       ],
     },
     {
@@ -66,6 +68,7 @@ const router = createRouter({
       children: [
         { path: '', redirect: '/platform/subscriptions' },
         { path: 'subscriptions', component: () => import('../pages/platform/PlatformSubscriptionReview.vue') },
+        { path: 'profile', component: () => import('../pages/common/ProfilePage.vue') },
       ],
     },
     {
@@ -91,6 +94,11 @@ const router = createRouter({
   },
 });
 
+/**
+ * Route Guard نقش‌محور. این Guard فقط UX را محافظت می‌کند (جلوگیری از
+ * نمایش صفحه‌ای که کاربر دسترسی ندارد)؛ محافظت واقعی داده همچنان توسط
+ * requireRole سمت Backend انجام می‌شود.
+ */
 router.beforeEach((to) => {
   const authStore = useAuthStore();
   const requiredRoles = to.matched.flatMap((record) => (record.meta.roles as UserRole[]) ?? []);
