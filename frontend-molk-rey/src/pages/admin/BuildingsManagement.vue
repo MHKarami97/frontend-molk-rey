@@ -10,6 +10,8 @@ interface Unit {
   area: number;
   floor: number;
   ownerId: string;
+  ownerName: string;
+  ownerPhone: string;
   residentId: string | null;
 }
 
@@ -48,7 +50,9 @@ async function submitBuilding() {
   await apiFetch('/admin/buildings', { method: 'POST', body: JSON.stringify(buildingForm.value) });
   showBuildingForm.value = false;
   buildingForm.value = { name: '', address: '', totalUnits: 1 };
-  await store.fetchBuildings();
+  // force=true: بعد از ایجاد ساختمان جدید، Cache قدیمی store باید دوباره
+  // از سرور گرفته شود، نه این‌که به‌خاطر گارد کش‌گذاری نادیده گرفته شود.
+  await store.fetchBuildings(true);
 }
 
 async function submitUnit() {
@@ -113,6 +117,7 @@ async function confirmDelete() {
       هنوز واحدی برای این ساختمان ثبت نشده است. با دکمه «+ واحد جدید» شروع کنید.
     </p>
 
+    <!-- جدول Desktop -->
     <table v-else class="hidden w-full overflow-hidden rounded-card border border-surface-border bg-surface text-sm sm:table">
       <thead class="bg-secondary/60 text-label text-ink/70">
         <tr>
@@ -126,7 +131,10 @@ async function confirmDelete() {
         <tr v-for="unit in units" :key="unit.id" class="border-t border-surface-border">
           <td class="p-3">{{ unit.floor }}</td>
           <td class="p-3">{{ unit.area }} متر</td>
-          <td class="p-3 text-xs text-ink/60">{{ unit.ownerId }}</td>
+          <td class="p-3 text-xs text-ink/80">
+            {{ unit.ownerName }}
+            <span class="text-ink/50" dir="ltr">({{ unit.ownerPhone }})</span>
+          </td>
           <td class="p-3">
             <button class="text-xs text-danger hover:underline" @click="deleteTarget = { type: 'unit', id: unit.id }">
               حذف
@@ -136,16 +144,20 @@ async function confirmDelete() {
       </tbody>
     </table>
 
+    <!-- Card موبایل -->
     <div v-if="units.length > 0" class="space-y-2 sm:hidden">
       <div v-for="unit in units" :key="unit.id" class="rounded-card border border-surface-border bg-surface p-3">
         <p class="text-heading text-ink">طبقه {{ unit.floor }} — {{ unit.area }} متر</p>
-        <p class="mt-1 text-xs text-ink/60">مالک: {{ unit.ownerId }}</p>
+        <p class="mt-1 text-xs text-ink/60">
+          مالک: {{ unit.ownerName }} <span dir="ltr">({{ unit.ownerPhone }})</span>
+        </p>
         <button class="mt-2 text-xs text-danger hover:underline" @click="deleteTarget = { type: 'unit', id: unit.id }">
           حذف واحد
         </button>
       </div>
     </div>
 
+    <!-- Modal ساختمان جدید -->
     <Teleport to="body">
       <Transition name="fade">
         <div v-if="showBuildingForm" class="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4">
@@ -174,6 +186,7 @@ async function confirmDelete() {
       </Transition>
     </Teleport>
 
+    <!-- Modal واحد جدید -->
     <Teleport to="body">
       <Transition name="fade">
         <div v-if="showUnitForm" class="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4">

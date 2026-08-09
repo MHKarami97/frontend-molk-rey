@@ -30,6 +30,8 @@ const HOURS = Array.from({ length: 14 }, (_, i) => 8 + i); // ۸ صبح تا ۲�
 async function loadFacilities() {
   if (!store.activeUnit) return;
   facilities.value = await apiFetch<Facility[]>(`/resident/facilities?buildingId=${store.activeUnit.buildingId}`);
+  // اصلاح noUncheckedIndexedAccess: facilities.value[0] می‌تواند undefined
+  // باشد حتی وقتی length>0 چک شده (TS این را از روی .length نارو نمی‌کند)
   if (!selectedFacilityId.value) {
     selectedFacilityId.value = facilities.value[0]?.id ?? null;
   }

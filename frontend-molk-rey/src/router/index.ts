@@ -66,8 +66,11 @@ const router = createRouter({
       component: PlatformLayout,
       meta: { roles: ['platform_admin'] },
       children: [
-        { path: '', redirect: '/platform/subscriptions' },
+        { path: '', redirect: '/platform/dashboard' },
+        { path: 'dashboard', component: () => import('../pages/platform/PlatformDashboard.vue') },
         { path: 'subscriptions', component: () => import('../pages/platform/PlatformSubscriptionReview.vue') },
+        { path: 'users', component: () => import('../pages/platform/PlatformUsersManagement.vue') },
+        { path: 'buildings', component: () => import('../pages/platform/PlatformBuildingsManagement.vue') },
         { path: 'profile', component: () => import('../pages/common/ProfilePage.vue') },
       ],
     },
@@ -78,11 +81,6 @@ const router = createRouter({
     },
   ],
 
-  /**
-   * scrollBehavior: طبق درخواست صریح، هر Navigation (چه به Hash یک بخش
-   * مثل #features، چه بین صفحات) باید Smooth باشد، نه پرش ناگهانی.
-   * savedPosition فقط با دکمه Back/Forward مرورگر پر می‌شود.
-   */
   scrollBehavior(to, _from, savedPosition) {
     if (savedPosition) {
       return { ...savedPosition, behavior: 'smooth' };
@@ -94,11 +92,6 @@ const router = createRouter({
   },
 });
 
-/**
- * Route Guard نقش‌محور. این Guard فقط UX را محافظت می‌کند (جلوگیری از
- * نمایش صفحه‌ای که کاربر دسترسی ندارد)؛ محافظت واقعی داده همچنان توسط
- * requireRole سمت Backend انجام می‌شود.
- */
 router.beforeEach((to) => {
   const authStore = useAuthStore();
   const requiredRoles = to.matched.flatMap((record) => (record.meta.roles as UserRole[]) ?? []);
