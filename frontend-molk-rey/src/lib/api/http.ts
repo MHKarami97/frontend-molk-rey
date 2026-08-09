@@ -1,6 +1,8 @@
 /**
  * http.ts: کلاینت پایه Fetch با پرتاب خطای یکنواخت (مطابق فرمت error.middleware.ts
- * سمت Backend)، به‌همراه Auto-Refresh خودکار Access Token منقضی‌شده.
+ * سمت Backend)، به‌همراه Auto-Refresh خودکار Access Token منقضی‌شده و
+ * نمایش خودکار Toast برای هر خطای API (حتی اگر صفحه فراخوان try/catch
+ * نداشته باشد — قبلاً این خطاها کاملاً بی‌صدا از بین می‌رفتند).
  *
  * سناریوی Auto-Refresh:
  * 1) هر درخواست با Access Token فعلی ارسال می‌شود.
@@ -12,6 +14,8 @@
  * 4) اگر Refresh هم شکست خورد (مثلاً Refresh Token هم منقضی شده)، وضعیت
  *    Auth لوکال پاک و کاربر خودکار به /login هدایت می‌شود.
  */
+import { useToastStore } from '../../stores/useToastStore';
+
 export interface ApiErrorBody {
   success: false;
   error: { code: string; message: string; details?: unknown };
@@ -46,6 +50,19 @@ function clearAuthAndRedirectToLogin() {
   const isAlreadyOnLogin = window.location.pathname.endsWith('/login');
   if (!isAlreadyOnLogin) {
     window.location.href = `/login?redirect=${encodeURIComponent(currentPath)}`;
+  }
+}
+
+/**
+ * notifyError: نمایش خودکار Toast برای هر خطای API. داخل try/catch
+ * قرار دارد چون در تئوری اگر Pinia هنوز نصب نشده باشد (مرایماًا در تست‌های
+ * واحد ایزوله)، نباید خودِ نمایش خطا باعث خطای جدید شود.
+ */
+function notifyError(error: ApiError) {
+  try {
+    useToastStore().push(error.message, 'danger');
+  } catch {
+    // Pinia آماده نیست؛ بی‌خطر نادیده گرفته می‌شود
   }
 }
 
@@ -108,11 +125,13 @@ async function rawFetch(
 
   if (!response.ok) {
     const errorBody = body as ApiErrorBody;
-    throw new ApiError(
+    const apiError = new ApiError(
       errorBody.error?.code ?? 'UNKNOWN_ERROR',
       errorBody.error?.message ?? 'خطای ناشناخته رخ داد.',
       response.status
     );
+    notifyError(apiError);
+    throw apiError;
   }
 
   return body;
