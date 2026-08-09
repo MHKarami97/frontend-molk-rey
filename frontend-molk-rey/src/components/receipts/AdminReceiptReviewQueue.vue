@@ -53,6 +53,7 @@ async function decide(receiptId: string, decision: 'confirmed' | 'rejected', rev
   if (index === -1) return;
 
   const removedItem = items.value[index];
+  if (!removedItem) return;
   items.value.splice(index, 1);
   isSubmitting.value = true;
 
