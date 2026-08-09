@@ -1,18 +1,18 @@
 /**
  * http.ts: کلاینت پایه Fetch با پرتاب خطای یکنواخت (مطابق فرمت error.middleware.ts
- * سمت Backend)، به‌همراه Auto-Refresh خودکار Access Token منقضی‌شده و
- * نمایش خودکار Toast برای هر خطای API (حتی اگر صفحه فراخوان try/catch
- * نداشته باشد — قبلاً این خطاها کاملاً بی‌صدا از بین می‌رفتند).
+ * سمت Backend)، Auto-Refresh خودکار Access Token منقضی‌شده، نمایش خودکار
+ * Toast برای هر خطای API، و یک لایه Cache سراسری برای درخواست‌های GET.
  *
- * سناریوی Auto-Refresh:
- * 1) هر درخواست با Access Token فعلی ارسال می‌شود.
- * 2) اگر پاسخ 401 برگردد (Token منقضی)، یک تلاش (نه بیشتر، برای جلوگیری
- *    از حلقه بی‌نهایت) برای گرفتن Access Token جدید از /auth/refresh
- *    انجام می‌شود (credentials: 'include' چون Refresh Token در httpOnly
- *    Cookie جدا از Origin فرانت‌اند است).
- * 3) اگر Refresh موفق بود، درخواست اصلی یک‌بار با Token جدید تکرار می‌شود.
- * 4) اگر Refresh هم شکست خورد (مثلاً Refresh Token هم منقضی شده)، وضعیت
- *    Auth لوکال پاک و کاربر خودکار به /login هدایت می‌شود.
+ * استراتژی Cache:
+ * - هر GET موفق حداکثر GET_CACHE_TTL_MS (پیش‌فرض ۳ دقیقه) در حافظه
+ *   نگه داشته می‌شود؛ درخواست بعدی به همان مسیر در همین بازه، بدون رفتن
+ *   به شبکه از Cache پاسخ می‌گیرد.
+ * - هر درخواست غیر-GET موفق (POST/PUT/PATCH/DELETE) بلافاصله کل Cache
+ *   را به‌صورت سراسری پاک می‌کند - چون نمی‌دانیم دقیقاً کدام GET به داده
+ *   تغییریافته وابسته بوده، امن‌ترین کار پاک‌کردن همه‌چیز است تا هیچ
+ *   صفحه‌ای داده Stale نبیند.
+ * - همزمانی: چون خودِ Promise (نه فقط نتیجه نهایی) Cache می‌شود، چند
+ *   درخواست هم‌زمان به یک مسیر فقط یک بار واقعاً به شبکه می‌روند.
  */
 import { useToastStore } from '../../stores/useToastStore';
 
@@ -36,7 +36,29 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api';
 const ACCESS_TOKEN_KEY = 'molk_rey_access_token';
 const USER_KEY = 'molk_rey_current_user';
 
+/** مدت اعتبار هر ورودی Cache (میلی‌ثانیه). پیش‌فرض: ۳ دقیقه. */
+const GET_CACHE_TTL_MS = 3 * 60 * 1000;
+
 let refreshPromise: Promise<string | null> | null = null;
+
+interface CacheEntry {
+  promise: Promise<unknown>;
+  expiresAt: number;
+}
+
+/**
+ * getCache: کلید = path کامل (شامل querystring). سراسری (ماژول-سطح) است
+ * تا بین همه Composable/Store های فرانت مشترک باشد.
+ */
+const getCache = new Map<string, CacheEntry>();
+
+/**
+ * invalidateApiCache: پاک‌سازی دستی کل Cache (مثلاً برای دکمه «بازخوانی»)،
+ * بدون نیاز به یک Write واقعی.
+ */
+export function invalidateApiCache(): void {
+  getCache.clear();
+}
 
 function getAccessToken(): string | null {
   return localStorage.getItem(ACCESS_TOKEN_KEY);
@@ -53,11 +75,6 @@ function clearAuthAndRedirectToLogin() {
   }
 }
 
-/**
- * notifyError: نمایش خودکار Toast برای هر خطای API. داخل try/catch
- * قرار دارد چون در تئوری اگر Pinia هنوز نصب نشده باشد (مرایماًا در تست‌های
- * واحد ایزوله)، نباید خودِ نمایش خطا باعث خطای جدید شود.
- */
 function notifyError(error: ApiError) {
   try {
     useToastStore().push(error.message, 'danger');
@@ -66,11 +83,6 @@ function notifyError(error: ApiError) {
   }
 }
 
-/**
- * refreshAccessToken: هم‌زمان‌سازی‌شده با یک Promise مشترک، تا اگر چند
- * درخواست هم‌زمان با 401 مواجه شوند، فقط یک بار /auth/refresh صدا زده شود
- * (نه یک درخواست Refresh جدا برای هرکدام).
- */
 async function refreshAccessToken(): Promise<string | null> {
   if (!refreshPromise) {
     refreshPromise = fetch(`${API_BASE_URL}/auth/refresh`, {
@@ -93,10 +105,10 @@ async function refreshAccessToken(): Promise<string | null> {
   return refreshPromise;
 }
 
-async function rawFetch(
+async function performFetch(
   path: string,
-  options: RequestInit & { auth?: boolean } = {},
-  isRetry = false
+  options: RequestInit & { auth?: boolean },
+  isRetry: boolean
 ): Promise<unknown> {
   const { auth = true, headers, ...rest } = options;
   const token = auth ? getAccessToken() : null;
@@ -111,11 +123,10 @@ async function rawFetch(
     },
   });
 
-  // فقط برای درخواست‌های احراز-هویت‌دار و فقط یک‌بار تلاش برای Refresh
   if (response.status === 401 && auth && !isRetry) {
     const newToken = await refreshAccessToken();
     if (newToken) {
-      return rawFetch(path, options, true);
+      return performFetch(path, options, true);
     }
     clearAuthAndRedirectToLogin();
     throw new ApiError('SESSION_EXPIRED', 'نشست شما منقضی شده است.', 401);
@@ -135,6 +146,31 @@ async function rawFetch(
   }
 
   return body;
+}
+
+async function rawFetch(path: string, options: RequestInit & { auth?: boolean } = {}): Promise<unknown> {
+  const method = (options.method ?? 'GET').toUpperCase();
+
+  if (method !== 'GET') {
+    // هر Write (موفق یا ناموفق) کل Cache را پاک می‌کند تا هیچ صفحه‌ای
+    // بعد از تغییر، داده کهنه نبیند.
+    try {
+      return await performFetch(path, options, false);
+    } finally {
+      getCache.clear();
+    }
+  }
+
+  const cached = getCache.get(path);
+  if (cached && cached.expiresAt > Date.now()) {
+    return cached.promise;
+  }
+
+  const promise = performFetch(path, options, false);
+  getCache.set(path, { promise, expiresAt: Date.now() + GET_CACHE_TTL_MS });
+  // اگر درخواست خطا داد، نتیجه خطا نباید تا پایان TTL در Cache بماند.
+  promise.catch(() => getCache.delete(path));
+  return promise;
 }
 
 export async function apiFetch<T>(
