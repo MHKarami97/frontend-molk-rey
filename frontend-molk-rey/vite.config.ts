@@ -58,7 +58,7 @@ export default defineConfig({
       workbox: {
         // صفحه آفلاین اختصاصی به‌جای صفحه پیش‌فرض مرورگر، وقتی هیچ صفحه‌ای
         // در Cache موجود نیست و شبکه هم قطع است.
-        navigateFallback: `${REPO_BASE_PATH}offline.html`,
+        navigateFallback: `${REPO_BASE_PATH}index.html`,
         navigateFallbackDenylist: [/^\/api\//],
 
         runtimeCaching: [

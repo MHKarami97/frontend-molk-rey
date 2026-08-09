@@ -62,7 +62,7 @@ const navItems = [
     </header>
 
     <main>
-      <slot />
+      <router-view />
     </main>
 
     <footer class="border-t border-surface-border bg-surface p-6 text-center text-xs text-ink/50">

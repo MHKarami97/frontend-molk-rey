@@ -63,6 +63,11 @@ const router = createRouter({
         { path: 'subscriptions', component: () => import('../pages/platform/PlatformSubscriptionReview.vue') },
       ],
     },
+    {
+      path: '/:pathMatch(.*)*',
+      component: () => import('../pages/NotFoundPage.vue'),
+      meta: { public: true },
+    },
   ],
 });
 
