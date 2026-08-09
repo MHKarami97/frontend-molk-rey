@@ -14,17 +14,18 @@ export interface AuthUser {
 const ACCESS_TOKEN_KEY = 'molk_rey_access_token';
 const USER_KEY = 'molk_rey_current_user';
 
-interface LoginResponse {
+interface AuthResponse {
   accessToken: string;
   user: AuthUser;
 }
 
-/**
- * useAuthStore: منبع واحد حقیقت برای وضعیت احراز هویت در کل SPA. هم Router Guard و
- * هم Layout ها (برای نمایش/عدم نمایش لینک‌های نقش‌محور)
- * از همین Store می‌خوانند. Token در localStorage با همان کلیدی که
- * lib/api/http.ts می‌خواند ذخیره می‌شود تا هماهنگ بماند.
- */
+export interface RegisterInput {
+  name: string;
+  phone: string;
+  password: string;
+  role: 'admin' | 'resident' | 'owner';
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref<string | null>(localStorage.getItem(ACCESS_TOKEN_KEY));
   const user = ref<AuthUser | null>(readStoredUser());
@@ -51,7 +52,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function login(phone: string, password: string): Promise<{ ok: true } | { ok: false; message: string }> {
     try {
-      const result = await apiFetch<LoginResponse>('/auth/login', {
+      const result = await apiFetch<AuthResponse>('/auth/login', {
         method: 'POST',
         auth: false,
         body: JSON.stringify({ phone, password }),
@@ -60,6 +61,24 @@ export const useAuthStore = defineStore('auth', () => {
       return { ok: true };
     } catch (e) {
       return { ok: false, message: e instanceof ApiError ? e.message : 'ورود ناموفق بود.' };
+    }
+  }
+
+  /**
+   * register: ثبت‌نام عمومی (Self-Signup)؛ بعد از موفقیت، دقیقاً مثل login
+   * کاربر را Persist می‌کند (Auto-Login سمت سرور هم انجام شده است).
+   */
+  async function register(input: RegisterInput): Promise<{ ok: true } | { ok: false; message: string }> {
+    try {
+      const result = await apiFetch<AuthResponse>('/auth/register', {
+        method: 'POST',
+        auth: false,
+        body: JSON.stringify(input),
+      });
+      persist(result.accessToken, result.user);
+      return { ok: true };
+    } catch (e) {
+      return { ok: false, message: e instanceof ApiError ? e.message : 'ثبت‌نام ناموفق بود.' };
     }
   }
 
@@ -75,10 +94,6 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem(USER_KEY);
   }
 
-  /**
-   * مسیر پیش‌فرض بعد از ورود موفق، بر اساس نقش کاربر — تا کاربر بلافاصله
-   * به پنل مرتبط با خودش هدایت شود، نه صفحه معرفی عمومی.
-   */
   function getHomeRouteForRole(r: UserRole | null): string {
     switch (r) {
       case 'platform_admin':
@@ -94,5 +109,5 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { accessToken, user, isAuthenticated, role, login, logout, getHomeRouteForRole };
+  return { accessToken, user, isAuthenticated, role, login, register, logout, getHomeRouteForRole };
 });

@@ -61,6 +61,10 @@ async function submit() {
           {{ isSubmitting ? 'در حال ورود...' : 'ورود' }}
         </button>
       </form>
+
+      <p class="mt-4 text-center text-xs text-ink/60">
+        حساب ندارید؟ <router-link to="/register" class="text-primary hover:underline">ثبت‌نام کنید</router-link>
+      </p>
     </div>
 
     <router-link to="/" class="mt-4 text-center text-xs text-ink/50 hover:text-primary">

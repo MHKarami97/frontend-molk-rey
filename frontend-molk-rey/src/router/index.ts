@@ -25,6 +25,11 @@ const router = createRouter({
       meta: { public: true },
     },
     {
+      path: '/register',
+      component: () => import('../pages/auth/RegisterPage.vue'),
+      meta: { public: true },
+    },
+    {
       path: '/admin',
       component: AdminLayout,
       meta: { roles: ['admin', 'board_member'] },
@@ -69,15 +74,23 @@ const router = createRouter({
       meta: { public: true },
     },
   ],
+
+  /**
+   * scrollBehavior: طبق درخواست صریح، هر Navigation (چه به Hash یک بخش
+   * مثل #features، چه بین صفحات) باید Smooth باشد، نه پرش ناگهانی.
+   * savedPosition فقط با دکمه Back/Forward مرورگر پر می‌شود.
+   */
+  scrollBehavior(to, _from, savedPosition) {
+    if (savedPosition) {
+      return { ...savedPosition, behavior: 'smooth' };
+    }
+    if (to.hash) {
+      return { el: to.hash, behavior: 'smooth', top: 80 };
+    }
+    return { top: 0, behavior: 'smooth' };
+  },
 });
 
-/**
- * Route Guard نقش‌محور: قبل از هر Navigation بررسی می‌کند که آیا مسیر
- * نیاز به Login دارد و آیا نقش کاربر فعلی مجاز است. این Guard فقط UX را
- * محافظت می‌کند (جلوگیری از نمایش صفحه‌ای که کاربر دسترسی ندارد)؛
- * محافظت واقعی داده همچنان توسط requireRole سمت Backend انجام می‌شود،
- * چون هیچ Route Guard سمت کلاینت را نمی‌توان منبع امنیت واقعی دانست.
- */
 router.beforeEach((to) => {
   const authStore = useAuthStore();
   const requiredRoles = to.matched.flatMap((record) => (record.meta.roles as UserRole[]) ?? []);

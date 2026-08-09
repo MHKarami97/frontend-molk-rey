@@ -19,18 +19,27 @@ const navItems = [
       <div class="mx-auto flex max-w-6xl items-center justify-between p-4">
         <router-link to="/" class="text-heading text-primary">ملک‌ری</router-link>
 
+        <!-- اصلاح حیاتی: قبلاً <a href> بود که باعث Reload کامل صفحه
+        می‌شد؛ router-link از History API استفاده می‌کند و SPA را در
+        می‌کند (بدون Reload)، حتی برای مسیرهای دارای Hash متل /#features. -->
         <nav class="hidden gap-6 sm:flex">
-          <a
+          <router-link
             v-for="item in navItems"
             :key="item.label"
-            :href="item.to"
+            :to="item.to"
             class="text-sm text-ink/70 transition hover:text-primary"
           >
             {{ item.label }}
-          </a>
+          </router-link>
         </nav>
 
         <div class="hidden items-center gap-2 sm:flex">
+          <router-link
+            to="/register"
+            class="rounded-control bg-primary px-4 py-1.5 text-sm text-white hover:bg-primary-dark"
+          >
+            ثبت‌نام
+          </router-link>
           <router-link
             to="/login"
             class="rounded-control border border-surface-border px-4 py-1.5 text-sm text-ink/80 hover:bg-secondary"
@@ -43,18 +52,26 @@ const navItems = [
       </div>
 
       <nav v-if="isMenuOpen" class="flex flex-col gap-1 border-t border-surface-border p-4 sm:hidden">
-        <a
+        <router-link
           v-for="item in navItems"
           :key="item.label"
-          :href="item.to"
+          :to="item.to"
           class="rounded-control px-3 py-2 text-sm text-ink/80 hover:bg-secondary"
           @click="isMenuOpen = false"
         >
           {{ item.label }}
-        </a>
+        </router-link>
+        <router-link
+          to="/register"
+          class="mt-1 rounded-control bg-primary px-3 py-2 text-center text-sm text-white"
+          @click="isMenuOpen = false"
+        >
+          ثبت‌نام
+        </router-link>
         <router-link
           to="/login"
-          class="mt-1 rounded-control bg-primary px-3 py-2 text-center text-sm text-white"
+          class="rounded-control border border-surface-border px-3 py-2 text-center text-sm text-ink/80"
+          @click="isMenuOpen = false"
         >
           ورود
         </router-link>
