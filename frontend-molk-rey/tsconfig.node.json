@@ -6,7 +6,7 @@
     "moduleResolution": "Bundler",
     "strict": true,
     "skipLibCheck": true,
-    "types": ["node"]
+    "types": ["node", "vite/client", "vite-plugin-pwa/vue"]
   },
   "include": ["vite.config.ts"]
 }
