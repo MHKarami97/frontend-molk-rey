@@ -5,7 +5,7 @@
       "namespace": "android_app",
       "package_name": "mhk.molkrey",
       "sha256_cert_fingerprints": [
-        ""
+        "A1:02:22:BA:59:0A:A0:EB:13:7B:06:11:BB:91:9B:65:C6:E9:04:E9:30:5F:98:D1:DA:B9:62:21:91:B8:81:43"
       ]
     }
   },
@@ -15,7 +15,7 @@
       "namespace": "cafebazaar_twa",
       "package_name": "mhk.molkrey",
       "sha256_cert_fingerprints": [
-        ""
+        "A1:02:22:BA:59:0A:A0:EB:13:7B:06:11:BB:91:9B:65:C6:E9:04:E9:30:5F:98:D1:DA:B9:62:21:91:B8:81:43"
       ]
     }
   }

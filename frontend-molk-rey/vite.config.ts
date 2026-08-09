@@ -21,7 +21,7 @@ export default defineConfig({
         dir: 'rtl',
         start_url: REPO_BASE_PATH,
         scope: REPO_BASE_PATH,
-        display: 'standalone',      
+        display: 'fullscreen',      
         theme_color: '#B5502F',
         background_color: '#F2E9DE',
         icons: [
