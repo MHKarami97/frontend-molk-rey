@@ -1,85 +1,76 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import {
-  toJalali,
-  jalaliToGregorian,
-  toIsoDateString,
-  daysInJalaliMonth,
-  PERSIAN_MONTHS,
-} from "../../lib/jalali";
+import { computed, ref, watch } from 'vue';
+import { toJalali, jalaliToGregorian, toIsoDateString, daysInJalaliMonth, PERSIAN_MONTHS } from '../../lib/jalali';
+
 const props = defineProps<{ modelValue: string }>();
-const emit = defineEmits<{ (e: "update:modelValue", value: string): void }>();
-const now = toJalali(new Date());
-const years = Array.from({ length: 8 }, (_, i) => now.jy + 3 - i);
-const year = ref<number | "">("");
-const month = ref<number | "">("");
-const day = ref<number | "">("");
-function sync() {
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
+
+const nowJalali = toJalali(new Date());
+const years = Array.from({ length: 8 }, (_, i) => nowJalali.jy + 3 - i);
+
+const selectedYear = ref<number | ''>('');
+const selectedMonth = ref<number | ''>('');
+const selectedDay = ref<number | ''>('');
+
+function syncFromModelValue() {
   if (!props.modelValue) {
-    year.value = month.value = day.value = "";
+    selectedYear.value = '';
+    selectedMonth.value = '';
+    selectedDay.value = '';
     return;
   }
-  const value = toJalali(new Date(props.modelValue));
-  year.value = value.jy;
-  month.value = value.jm;
-  day.value = value.jd;
+  const parsed = new Date(props.modelValue);
+  if (Number.isNaN(parsed.getTime())) return;
+  const { jy, jm, jd } = toJalali(parsed);
+  selectedYear.value = jy;
+  selectedMonth.value = jm;
+  selectedDay.value = jd;
 }
-watch(() => props.modelValue, sync, { immediate: true });
-const days = computed(() =>
-  Array.from(
-    {
-      length:
-        year.value && month.value
-          ? daysInJalaliMonth(year.value, month.value)
-          : 31,
-    },
-    (_, i) => i + 1,
-  ),
-);
-function change() {
-  if (year.value && month.value && day.value)
-    emit(
-      "update:modelValue",
-      toIsoDateString(jalaliToGregorian(year.value, month.value, day.value)),
-    );
+
+watch(() => props.modelValue, syncFromModelValue, { immediate: true });
+
+const dayOptions = computed(() => {
+  if (!selectedYear.value || !selectedMonth.value) return Array.from({ length: 31 }, (_, i) => i + 1);
+  const count = daysInJalaliMonth(selectedYear.value, selectedMonth.value);
+  return Array.from({ length: count }, (_, i) => i + 1);
+});
+
+function emitIfComplete() {
+  if (selectedYear.value && selectedMonth.value && selectedDay.value) {
+    const gDate = jalaliToGregorian(selectedYear.value, selectedMonth.value, selectedDay.value);
+    emit('update:modelValue', toIsoDateString(gDate));
+  }
 }
 </script>
+
 <template>
   <div class="grid grid-cols-3 gap-2" dir="rtl">
     <select
-      v-model="day"
+      v-model="selectedDay"
       aria-label="روز"
       class="rounded-control border border-surface-border p-2 text-sm"
-      @change="change"
+      @change="emitIfComplete"
     >
       <option value="" disabled>روز</option>
-      <option v-for="value in days" :key="value" :value="value">
-        {{ value }}
-      </option></select
-    ><select
-      v-model="month"
+      <option v-for="d in dayOptions" :key="d" :value="d">{{ d }}</option>
+    </select>
+    <select
+      v-model="selectedMonth"
       aria-label="ماه"
       class="rounded-control border border-surface-border p-2 text-sm"
-      @change="change"
+      @change="emitIfComplete"
     >
       <option value="" disabled>ماه</option>
-      <option
-        v-for="(value, index) in PERSIAN_MONTHS"
-        :key="value"
-        :value="index + 1"
-      >
-        {{ value }}
-      </option></select
-    ><select
-      v-model="year"
+      <option v-for="(m, i) in PERSIAN_MONTHS" :key="i" :value="i + 1">{{ m }}</option>
+    </select>
+    <select
+      v-model="selectedYear"
       aria-label="سال"
       class="rounded-control border border-surface-border p-2 text-sm"
-      @change="change"
+      @change="emitIfComplete"
     >
       <option value="" disabled>سال</option>
-      <option v-for="value in years" :key="value" :value="value">
-        {{ value }}
-      </option>
+      <option v-for="y in years" :key="y" :value="y">{{ y }}</option>
     </select>
   </div>
 </template>

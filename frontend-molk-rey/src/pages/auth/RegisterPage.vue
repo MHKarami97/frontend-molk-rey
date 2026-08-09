@@ -56,32 +56,43 @@ async function submit() {
           </select>
         </div>
 
-        <input
-          v-model="name"
-          placeholder="نام و نام خانوادگی"
-          autocomplete="name"
-          class="w-full rounded-control border border-surface-border p-3 text-sm"
-          required
-        />
-        <input
-          v-model="phone"
-          type="tel"
-          id="username"
-          name="username"
-          placeholder="شماره تلفن (مثلاً 09123456789)"
-          autocomplete="username"
-          class="w-full rounded-control border border-surface-border p-3 text-sm text-right"
-          required
-        />
-        <input
-          v-model="password"
-          type="password"
-          placeholder="رمز عبور (حداقل ۸ کاراکتر)"
-          autocomplete="new-password"
-          class="w-full rounded-control border border-surface-border p-3 text-sm"
-          required
-          minlength="8"
-        />
+        <div>
+          <label class="mb-1 block text-xs text-ink/60">نام و نام خانوادگی</label>
+          <input
+            v-model="name"
+            placeholder="نام کامل خود را وارد کنید"
+            autocomplete="name"
+            class="w-full rounded-control border border-surface-border p-3 text-sm"
+            required
+          />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-xs text-ink/60">شماره تلفن</label>
+          <input
+            v-model="phone"
+            type="tel"
+            id="username"
+            name="username"
+            autocomplete="username"
+            placeholder="مثلاً 09123456789"
+            class="w-full rounded-control border border-surface-border p-3 text-sm"
+            required
+          />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-xs text-ink/60">رمز عبور</label>
+          <input
+            v-model="password"
+            type="password"
+            autocomplete="new-password"
+            placeholder="حداقل ۸ کاراکتر"
+            class="w-full rounded-control border border-surface-border p-3 text-sm"
+            required
+            minlength="8"
+          />
+        </div>
 
         <p v-if="role !== 'admin'" class="rounded-control border border-dashed border-surface-border bg-secondary/40 p-2 text-xs text-ink/60">
           بعد از ثبت‌نام، حساب شما ساخته می‌شود اما هنوز به هیچ واحدی متصل نیست؛

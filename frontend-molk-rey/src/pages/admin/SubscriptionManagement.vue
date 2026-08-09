@@ -137,18 +137,24 @@ const usagePercent = () => {
         </p>
 
         <div v-if="uploadStage !== 'success'" class="mt-4 space-y-3">
-          <input
-            v-model.number="amount"
-            type="number"
-            placeholder="مبلغ واریزی (تومان)"
-            class="w-full rounded-control border border-surface-border p-2 text-sm"
-          />
+          <div>
+            <label class="mb-1 block text-xs text-ink/60">مبلغ واریزی (تومان)</label>
+            <input
+              v-model.number="amount"
+              type="number"
+              placeholder="مثلاً ۵۰۰۰۰۰"
+              class="w-full rounded-control border border-surface-border p-2 text-sm"
+            />
+          </div>
 
-          <label class="flex cursor-pointer flex-col items-center justify-center rounded-card border border-dashed border-surface-border bg-secondary/40 p-6 text-center">
-            <img v-if="previewUrl" :src="previewUrl" alt="پیش‌نمایش رسید" class="mb-2 max-h-40 rounded-control object-contain" />
-            <span v-else class="text-sm text-ink/60">برای انتخاب تصویر رسید کلیک کنید</span>
-            <input type="file" accept="image/jpeg,image/png,image/webp" class="hidden" @change="onFileChange" />
-          </label>
+          <div>
+            <label class="mb-1 block text-xs text-ink/60">تصویر رسید پرداخت</label>
+            <label class="flex cursor-pointer flex-col items-center justify-center rounded-card border border-dashed border-surface-border bg-secondary/40 p-6 text-center">
+              <img v-if="previewUrl" :src="previewUrl" alt="پیش‌نمایش رسید" class="mb-2 max-h-40 rounded-control object-contain" />
+              <span v-else class="text-sm text-ink/60">برای انتخاب تصویر رسید کلیک کنید</span>
+              <input type="file" accept="image/jpeg,image/png,image/webp" class="hidden" @change="onFileChange" />
+            </label>
+          </div>
 
           <p v-if="uploadError" class="text-sm text-danger">{{ uploadError }}</p>
 

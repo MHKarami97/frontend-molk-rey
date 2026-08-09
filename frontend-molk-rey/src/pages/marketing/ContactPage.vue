@@ -53,38 +53,44 @@ async function submit() {
     </p>
 
     <form v-if="!isSubmitted" class="mt-8 space-y-4" @submit.prevent="submit">
-      <input
-        v-model="form.name"
-        name="name"
-        placeholder="نام و نام خانوادگی"
-        class="w-full rounded-control border border-surface-border p-3 text-sm"
-        required
-      />
-      <input
-        v-model="form.email"
-        name="email"
-        type="email"
-        placeholder="ایمیل یا شماره تماس"
-        class="w-full rounded-control border border-surface-border p-3 text-sm"
-        required
-      />
-      <textarea
-        v-model="form.message"
-        name="message"
-        rows="5"
-        placeholder="پیام شما"
-        class="w-full rounded-control border border-surface-border p-3 text-sm"
-        required
-      />
+      <div>
+        <label class="mb-1 block text-xs text-ink/60">نام و نام خانوادگی</label>
+        <input
+          v-model="form.name"
+          placeholder="نام کامل خود را وارد کنید"
+          class="w-full rounded-control border border-surface-border p-3 text-sm"
+          required
+        />
+      </div>
 
-      <p v-if="error" class="text-sm text-danger">{{ error }}</p>
+      <div>
+        <label class="mb-1 block text-xs text-ink/60">ایمیل یا شماره تماس</label>
+        <input
+          v-model="form.email"
+          type="email"
+          placeholder="مثلاً you@example.com"
+          class="w-full rounded-control border border-surface-border p-3 text-sm"
+          required
+        />
+      </div>
+
+      <div>
+        <label class="mb-1 block text-xs text-ink/60">پیام شما</label>
+        <textarea
+          v-model="form.message"
+          rows="5"
+          placeholder="پیام خود را بنویسید"
+          class="w-full rounded-control border border-surface-border p-3 text-sm"
+          required
+        />
+      </div>
 
       <button
         type="submit"
         class="w-full rounded-control bg-primary py-3 text-sm text-white transition hover:bg-primary-dark disabled:opacity-50"
         :disabled="isSubmitting"
       >
-        {{ isSubmitting ? 'در حال ارسال...' : 'ارسال پیام' }}
+        ارسال پیام
       </button>
     </form>
 

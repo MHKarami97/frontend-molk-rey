@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { apiFetch, ApiError } from '../../lib/api/http';
 import { useAdminStore } from '../../stores/useAdminStore';
+import PersianDateTimePicker from '../../components/common/PersianDateTimePicker.vue';
 
 interface PollResult {
   optionId: string;
@@ -27,7 +28,10 @@ function removeOption(index: number) {
 }
 
 async function submit() {
-  if (!store.selectedBuildingId) return;
+  if (!store.selectedBuildingId) {
+    error.value = 'ابتدا یک ساختمان را از منوی کناری انتخاب کنید.';
+    return;
+  }
   isSubmitting.value = true;
   error.value = null;
   try {
@@ -62,19 +66,39 @@ const maxVotes = () => Math.max(1, ...results.value.map((r) => r.voteCount));
     <h1 class="text-heading text-ink">ایجاد رأی‌گیری</h1>
 
     <form v-if="!createdPollId" class="space-y-3 rounded-card border border-surface-border bg-surface p-4" @submit.prevent="submit">
-      <input v-model="question" placeholder="سؤال رأی‌گیری" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
-      <input v-model="expiresAt" type="datetime-local" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
+      <div>
+        <label class="mb-1 block text-xs text-ink/60">سؤال رأی‌گیری</label>
+        <input
+          v-model="question"
+          placeholder="سؤال رأی‌گیری"
+          class="w-full rounded-control border border-surface-border p-2 text-sm"
+          required
+        />
+      </div>
 
-      <div v-for="(option, i) in options" :key="i" class="flex gap-2">
-        <input v-model="options[i]" :placeholder="`گزینه ${i + 1}`" class="flex-1 rounded-control border border-surface-border p-2 text-sm" required />
-        <button v-if="options.length > 2" type="button" class="text-xs text-danger" @click="removeOption(i)">حذف</button>
+      <div>
+        <label class="mb-1 block text-xs text-ink/60">تاریخ و ساعت پایان (شمسی)</label>
+        <PersianDateTimePicker v-model="expiresAt" />
+      </div>
+
+      <div v-for="(option, i) in options" :key="i">
+        <label class="mb-1 block text-xs text-ink/60">{{ `گزینه ${i + 1}` }}</label>
+        <div class="flex gap-2">
+          <input
+            v-model="options[i]"
+            :placeholder="`گزینه ${i + 1}`"
+            class="flex-1 rounded-control border border-surface-border p-2 text-sm"
+            required
+          />
+          <button v-if="options.length > 2" type="button" class="text-xs text-danger" @click="removeOption(i)">حذف</button>
+        </div>
       </div>
 
       <button type="button" class="text-xs text-primary hover:underline" @click="addOption">+ افزودن گزینه</button>
 
       <p v-if="error" class="text-sm text-danger">{{ error }}</p>
 
-      <button type="submit" class="w-full rounded-control bg-primary py-2 text-white hover:bg-primary-dark disabled:opacity-50" :disabled="isSubmitting">
+      <button type="submit" class="w-full rounded-control bg-primary py-2 text-white hover:bg-primary-dark disabled:opacity-50" :disabled="isSubmitting || !expiresAt">
         ایجاد رأی‌گیری
       </button>
     </form>

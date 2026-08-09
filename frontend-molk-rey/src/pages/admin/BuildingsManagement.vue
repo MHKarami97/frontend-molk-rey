@@ -113,7 +113,6 @@ async function confirmDelete() {
       هنوز واحدی برای این ساختمان ثبت نشده است. با دکمه «+ واحد جدید» شروع کنید.
     </p>
 
-    <!-- جدول Desktop -->
     <table v-else class="hidden w-full overflow-hidden rounded-card border border-surface-border bg-surface text-sm sm:table">
       <thead class="bg-secondary/60 text-label text-ink/70">
         <tr>
@@ -137,7 +136,6 @@ async function confirmDelete() {
       </tbody>
     </table>
 
-    <!-- Card موبایل -->
     <div v-if="units.length > 0" class="space-y-2 sm:hidden">
       <div v-for="unit in units" :key="unit.id" class="rounded-card border border-surface-border bg-surface p-3">
         <p class="text-heading text-ink">طبقه {{ unit.floor }} — {{ unit.area }} متر</p>
@@ -148,15 +146,25 @@ async function confirmDelete() {
       </div>
     </div>
 
-    <!-- Modal ساختمان جدید -->
     <Teleport to="body">
       <Transition name="fade">
         <div v-if="showBuildingForm" class="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4">
           <form class="w-full max-w-sm space-y-3 rounded-card border border-surface-border bg-surface p-4" @submit.prevent="submitBuilding">
             <p class="text-heading text-ink">ساختمان جدید</p>
-            <input v-model="buildingForm.name" placeholder="نام ساختمان" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
-            <input v-model="buildingForm.address" placeholder="آدرس" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
-            <input v-model.number="buildingForm.totalUnits" type="number" min="1" placeholder="تعداد واحد" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
+
+            <div>
+              <label class="mb-1 block text-xs text-ink/60">نام ساختمان</label>
+              <input v-model="buildingForm.name" placeholder="مثلاً برج ری" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs text-ink/60">آدرس</label>
+              <input v-model="buildingForm.address" placeholder="آدرس کامل ساختمان" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs text-ink/60">تعداد واحد</label>
+              <input v-model.number="buildingForm.totalUnits" type="number" min="1" placeholder="مثلاً ۱۲" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
+            </div>
+
             <div class="flex justify-end gap-2">
               <button type="button" class="rounded-control border border-surface-border px-3 py-1.5 text-sm" @click="showBuildingForm = false">انصراف</button>
               <button type="submit" class="rounded-control bg-primary px-3 py-1.5 text-sm text-white">ثبت</button>
@@ -166,17 +174,33 @@ async function confirmDelete() {
       </Transition>
     </Teleport>
 
-    <!-- Modal واحد جدید -->
     <Teleport to="body">
       <Transition name="fade">
         <div v-if="showUnitForm" class="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4">
           <form class="w-full max-w-sm space-y-3 rounded-card border border-surface-border bg-surface p-4" @submit.prevent="submitUnit">
             <p class="text-heading text-ink">واحد جدید</p>
-            <input v-model.number="unitForm.floor" type="number" placeholder="طبقه" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
-            <input v-model.number="unitForm.area" type="number" placeholder="متراژ" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
-            <input v-model="unitForm.ownerName" placeholder="نام مالک" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
-            <input v-model="unitForm.ownerPhone" placeholder="شماره تلفن مالک" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
-            <input v-model="unitForm.ownerPassword" type="password" placeholder="رمز عبور اولیه" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
+
+            <div>
+              <label class="mb-1 block text-xs text-ink/60">طبقه</label>
+              <input v-model.number="unitForm.floor" type="number" placeholder="مثلاً ۳" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs text-ink/60">متراژ (متر مربع)</label>
+              <input v-model.number="unitForm.area" type="number" placeholder="مثلاً ۸۵" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs text-ink/60">نام مالک</label>
+              <input v-model="unitForm.ownerName" placeholder="نام و نام خانوادگی مالک" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs text-ink/60">شماره تلفن مالک</label>
+              <input v-model="unitForm.ownerPhone" placeholder="09xxxxxxxxx" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs text-ink/60">رمز عبور اولیه مالک</label>
+              <input v-model="unitForm.ownerPassword" type="password" placeholder="حداقل ۸ کاراکتر" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
+            </div>
+
             <div class="flex justify-end gap-2">
               <button type="button" class="rounded-control border border-surface-border px-3 py-1.5 text-sm" @click="showUnitForm = false">انصراف</button>
               <button type="submit" class="rounded-control bg-primary px-3 py-1.5 text-sm text-white">ثبت</button>

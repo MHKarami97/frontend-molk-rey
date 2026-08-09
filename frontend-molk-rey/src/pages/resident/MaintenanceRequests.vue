@@ -115,6 +115,7 @@ function stepIndex(status: MaintenanceRequest['status']): number {
     </div>
 
     <BottomSheet :open="showForm" title="درخواست تعمیر جدید" @close="showForm = false">
+      <label class="mb-1 block text-xs text-ink/60">توضیح مشکل</label>
       <textarea
         v-model="description"
         rows="4"

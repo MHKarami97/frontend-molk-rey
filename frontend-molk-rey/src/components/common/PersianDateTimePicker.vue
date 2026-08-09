@@ -1,118 +1,90 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import {
-  toJalali,
-  jalaliToGregorian,
-  daysInJalaliMonth,
-  PERSIAN_MONTHS,
-} from "../../lib/jalali";
+import { computed, ref, watch } from 'vue';
+import { toJalali, jalaliToGregorian, daysInJalaliMonth, PERSIAN_MONTHS } from '../../lib/jalali';
+
 const props = defineProps<{ modelValue: string }>();
-const emit = defineEmits<{ (e: "update:modelValue", value: string): void }>();
-const now = toJalali(new Date());
-const years = Array.from({ length: 8 }, (_, i) => now.jy + 3 - i);
-const year = ref<number | "">("");
-const month = ref<number | "">("");
-const day = ref<number | "">("");
-const hour = ref<number | "">("");
-const minute = ref<number | "">("");
-function sync() {
+const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
+
+const nowJalali = toJalali(new Date());
+const years = Array.from({ length: 8 }, (_, i) => nowJalali.jy + 3 - i);
+
+const selectedYear = ref<number | ''>('');
+const selectedMonth = ref<number | ''>('');
+const selectedDay = ref<number | ''>('');
+const selectedHour = ref<number | ''>('');
+const selectedMinute = ref<number | ''>('');
+
+function syncFromModelValue() {
   if (!props.modelValue) {
-    year.value = month.value = day.value = hour.value = minute.value = "";
+    selectedYear.value = '';
+    selectedMonth.value = '';
+    selectedDay.value = '';
+    selectedHour.value = '';
+    selectedMinute.value = '';
     return;
   }
-  const date = new Date(props.modelValue);
-  const value = toJalali(date);
-  year.value = value.jy;
-  month.value = value.jm;
-  day.value = value.jd;
-  hour.value = date.getHours();
-  minute.value = date.getMinutes();
+  const parsed = new Date(props.modelValue);
+  if (Number.isNaN(parsed.getTime())) return;
+  const { jy, jm, jd } = toJalali(parsed);
+  selectedYear.value = jy;
+  selectedMonth.value = jm;
+  selectedDay.value = jd;
+  selectedHour.value = parsed.getHours();
+  selectedMinute.value = parsed.getMinutes();
 }
-watch(() => props.modelValue, sync, { immediate: true });
-const days = computed(() =>
-  Array.from(
-    {
-      length:
-        year.value && month.value
-          ? daysInJalaliMonth(year.value, month.value)
-          : 31,
-    },
-    (_, i) => i + 1,
-  ),
-);
-const pad = (value: number) => String(value).padStart(2, "0");
-function change() {
+
+watch(() => props.modelValue, syncFromModelValue, { immediate: true });
+
+const dayOptions = computed(() => {
+  if (!selectedYear.value || !selectedMonth.value) return Array.from({ length: 31 }, (_, i) => i + 1);
+  const count = daysInJalaliMonth(selectedYear.value, selectedMonth.value);
+  return Array.from({ length: count }, (_, i) => i + 1);
+});
+const hourOptions = Array.from({ length: 24 }, (_, i) => i);
+const minuteOptions = [0, 15, 30, 45];
+
+function pad(n: number): string {
+  return String(n).padStart(2, '0');
+}
+
+function emitIfComplete() {
   if (
-    year.value &&
-    month.value &&
-    day.value &&
-    hour.value !== "" &&
-    minute.value !== ""
+    selectedYear.value &&
+    selectedMonth.value &&
+    selectedDay.value &&
+    selectedHour.value !== '' &&
+    selectedMinute.value !== ''
   ) {
-    const date = jalaliToGregorian(year.value, month.value, day.value);
-    emit(
-      "update:modelValue",
-      `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(hour.value as number)}:${pad(minute.value as number)}`,
-    );
+    const gDate = jalaliToGregorian(selectedYear.value, selectedMonth.value, selectedDay.value);
+    const iso = `${gDate.getFullYear()}-${pad(gDate.getMonth() + 1)}-${pad(gDate.getDate())}T${pad(
+      selectedHour.value as number
+    )}:${pad(selectedMinute.value as number)}`;
+    emit('update:modelValue', iso);
   }
 }
 </script>
+
 <template>
   <div class="grid grid-cols-5 gap-2" dir="rtl">
-    <select
-      v-model="day"
-      aria-label="روز"
-      class="rounded-control border border-surface-border p-2 text-sm"
-      @change="change"
-    >
+    <select v-model="selectedDay" aria-label="روز" class="rounded-control border border-surface-border p-2 text-sm" @change="emitIfComplete">
       <option value="" disabled>روز</option>
-      <option v-for="value in days" :key="value" :value="value">
-        {{ value }}
-      </option></select
-    ><select
-      v-model="month"
-      aria-label="ماه"
-      class="rounded-control border border-surface-border p-2 text-sm"
-      @change="change"
-    >
+      <option v-for="d in dayOptions" :key="d" :value="d">{{ d }}</option>
+    </select>
+    <select v-model="selectedMonth" aria-label="ماه" class="rounded-control border border-surface-border p-2 text-sm" @change="emitIfComplete">
       <option value="" disabled>ماه</option>
-      <option
-        v-for="(value, index) in PERSIAN_MONTHS"
-        :key="value"
-        :value="index + 1"
-      >
-        {{ value }}
-      </option></select
-    ><select
-      v-model="year"
-      aria-label="سال"
-      class="rounded-control border border-surface-border p-2 text-sm"
-      @change="change"
-    >
+      <option v-for="(m, i) in PERSIAN_MONTHS" :key="i" :value="i + 1">{{ m }}</option>
+    </select>
+    <select v-model="selectedYear" aria-label="سال" class="rounded-control border border-surface-border p-2 text-sm" @change="emitIfComplete">
       <option value="" disabled>سال</option>
-      <option v-for="value in years" :key="value" :value="value">
-        {{ value }}
-      </option></select
-    ><select
-      v-model="hour"
-      aria-label="ساعت"
-      class="rounded-control border border-surface-border p-2 text-sm"
-      @change="change"
-    >
+      <option v-for="y in years" :key="y" :value="y">{{ y }}</option>
+    </select>
+    <select v-model="selectedHour" aria-label="ساعت" class="rounded-control border border-surface-border p-2 text-sm" @change="emitIfComplete">
       <option value="" disabled>ساعت</option>
-      <option v-for="value in 24" :key="value" :value="value - 1">
-        {{ String(value - 1).padStart(2, "0") }}
-      </option></select
-    ><select
-      v-model="minute"
-      aria-label="دقیقه"
-      class="rounded-control border border-surface-border p-2 text-sm"
-      @change="change"
-    >
+      <option v-for="h in hourOptions" :key="h" :value="h">{{ String(h).padStart(2, '0') }}</option>
+    </select>
+    <select v-model="selectedMinute" aria-label="دقیقه" class="rounded-control border border-surface-border p-2 text-sm" @change="emitIfComplete">
       <option value="" disabled>دقیقه</option>
-      <option v-for="value in [0, 15, 30, 45]" :key="value" :value="value">
-        {{ String(value).padStart(2, "0") }}
-      </option>
+      <option v-for="m in minuteOptions" :key="m" :value="m">{{ String(m).padStart(2, '0') }}</option>
     </select>
   </div>
 </template>

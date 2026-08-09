@@ -34,7 +34,6 @@ async function load() {
 
 onMounted(load);
 
-// پیش‌نمایش ساده Markdown-like: فقط شکستن خط، بدون کتابخانه اضافه
 const preview = computed(() => form.value.body.split('\n').filter(Boolean));
 
 async function submit() {
@@ -93,8 +92,16 @@ async function confirmDelete() {
         <div v-if="showForm" class="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4">
           <form class="w-full max-w-md space-y-3 rounded-card border border-surface-border bg-surface p-4" @submit.prevent="submit">
             <p class="text-heading text-ink">اعلامیه جدید</p>
-            <input v-model="form.title" placeholder="عنوان" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
-            <textarea v-model="form.body" rows="4" placeholder="متن اعلامیه" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
+
+            <div>
+              <label class="mb-1 block text-xs text-ink/60">عنوان</label>
+              <input v-model="form.title" placeholder="عنوان اعلامیه" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
+            </div>
+
+            <div>
+              <label class="mb-1 block text-xs text-ink/60">متن اعلامیه</label>
+              <textarea v-model="form.body" rows="4" placeholder="متن کامل اعلامیه" class="w-full rounded-control border border-surface-border p-2 text-sm" required />
+            </div>
 
             <div v-if="preview.length > 0" class="rounded-control border border-dashed border-surface-border bg-secondary/40 p-2 text-xs text-ink/70">
               <p class="mb-1 text-label">پیش‌نمایش:</p>

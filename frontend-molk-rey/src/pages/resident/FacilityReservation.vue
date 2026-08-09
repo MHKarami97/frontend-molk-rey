@@ -3,6 +3,7 @@ import { ref, onMounted, computed, watch } from 'vue';
 import { apiFetch, ApiError } from '../../lib/api/http';
 import { useResidentStore } from '../../stores/useResidentStore';
 import UnitSwitcher from '../../components/resident/UnitSwitcher.vue';
+import PersianDatePicker from '../../components/common/PersianDatePicker.vue';
 
 interface Facility {
   id: string;
@@ -29,9 +30,8 @@ const HOURS = Array.from({ length: 14 }, (_, i) => 8 + i); // ۸ صبح تا ۲�
 async function loadFacilities() {
   if (!store.activeUnit) return;
   facilities.value = await apiFetch<Facility[]>(`/resident/facilities?buildingId=${store.activeUnit.buildingId}`);
-  const firstFacility = facilities.value[0];
-  if (!selectedFacilityId.value && firstFacility) {
-    selectedFacilityId.value = firstFacility.id;
+  if (!selectedFacilityId.value && facilities.value.length > 0) {
+    selectedFacilityId.value = facilities.value[0].id;
   }
 }
 
@@ -97,11 +97,17 @@ async function reserveHour(hour: number) {
     <UnitSwitcher />
     <h1 class="text-heading text-ink">رزرو مشاعات</h1>
 
-    <div class="flex gap-2">
-      <select v-model="selectedFacilityId" class="flex-1 rounded-control border border-surface-border p-2 text-sm">
-        <option v-for="facility in facilities" :key="facility.id" :value="facility.id">{{ facility.name }}</option>
-      </select>
-      <input v-model="selectedDate" type="date" class="rounded-control border border-surface-border p-2 text-sm" />
+    <div class="grid gap-3 sm:grid-cols-2">
+      <div>
+        <label class="mb-1 block text-xs text-ink/60">امکان رفاهی</label>
+        <select v-model="selectedFacilityId" class="w-full rounded-control border border-surface-border p-2 text-sm">
+          <option v-for="facility in facilities" :key="facility.id" :value="facility.id">{{ facility.name }}</option>
+        </select>
+      </div>
+      <div>
+        <label class="mb-1 block text-xs text-ink/60">تاریخ (شمسی)</label>
+        <PersianDatePicker v-model="selectedDate" />
+      </div>
     </div>
 
     <p v-if="error" class="text-sm text-danger">{{ error }}</p>

@@ -48,17 +48,11 @@ function closeReject() {
   activeReviewId.value = null;
 }
 
-/**
- * Optimistic UI Update: آیتم بلافاصله از لیست حذف می‌شود؛ در صورت خطای
- * سرور، آیتم به لیست بازگردانده می‌شود تا کاربر مجبور به Refresh کامل نشود.
- */
 async function decide(receiptId: string, decision: 'confirmed' | 'rejected', reviewNote?: string) {
   const index = items.value.findIndex((item) => item.receiptId === receiptId);
   if (index === -1) return;
 
   const removedItem = items.value[index];
-  if (!removedItem) return;
-
   items.value.splice(index, 1);
   isSubmitting.value = true;
 
@@ -174,6 +168,7 @@ function submitReject() {
         >
           <div class="w-full max-w-sm rounded-card border border-surface-border bg-surface p-4 shadow-overlay">
             <p class="mb-2 text-heading text-ink">دلیل رد رسید</p>
+            <label class="mb-1 block text-xs text-ink/60">یادداشت رد (الزامی)</label>
             <textarea
               v-model="rejectNote"
               rows="3"

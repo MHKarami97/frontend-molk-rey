@@ -18,11 +18,6 @@ const activeRejectId = ref<string | null>(null);
 const rejectNote = ref('');
 const isSubmitting = ref(false);
 
-/**
- * توجه فنی: مسیر نمایش تصویر رسید اشتراک از همان الگوی Placeholder
- * ماژول رسید شارژ استفاده می‌کند (VITE_RECEIPTS_PUBLIC_BASE_URL)؛ در
- * Production باید به یک Worker Route محافظت‌شده وصل شود.
- */
 function getImageUrl(imageKey: string): string {
   const base = import.meta.env.VITE_RECEIPTS_PUBLIC_BASE_URL ?? '/receipt-images';
   return `${base}/${imageKey}`;
@@ -123,6 +118,7 @@ function submitReject() {
       <div v-if="activeRejectId" class="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4">
         <div class="w-full max-w-sm rounded-card border border-surface-border bg-surface p-4 shadow-overlay">
           <p class="mb-2 text-heading text-ink">دلیل رد رسید اشتراک</p>
+          <label class="mb-1 block text-xs text-ink/60">یادداشت رد (الزامی)</label>
           <textarea
             v-model="rejectNote"
             rows="3"
