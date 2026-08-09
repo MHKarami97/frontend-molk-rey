@@ -44,8 +44,10 @@ async function submit() {
         <input
           v-model="phone"
           type="tel"
+          id="username"
+          name="username"
           placeholder="شماره تلفن (مثلاً 09123456789)"
-          autocomplete="tel"
+          autocomplete="username"
           class="w-full rounded-control border border-surface-border p-3 text-sm text-right"
           required
         />
