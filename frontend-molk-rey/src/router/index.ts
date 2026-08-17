@@ -42,7 +42,7 @@ const router = createRouter({
         { path: 'notices', component: () => import('../pages/admin/NoticesManagement.vue') },
         { path: 'polls', component: () => import('../pages/admin/PollsManagement.vue') },
         { path: 'receipts', component: () => import('../pages/admin/ReceiptsReviewPage.vue') },
-        { path: 'subscription', component: () => import('../pages/admin/SubscriptionManagement.vue') },
+        // { path: 'subscription', component: () => import('../pages/admin/SubscriptionManagement.vue') },
         { path: 'profile', component: () => import('../pages/common/ProfilePage.vue') },
       ],
     },

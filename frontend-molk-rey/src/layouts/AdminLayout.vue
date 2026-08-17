@@ -19,7 +19,7 @@ const navItems = [
   { key: 'notices', label: 'اعلامیه‌ها', to: '/admin/notices' },
   { key: 'polls', label: 'رأی‌گیری', to: '/admin/polls' },
   { key: 'receipts', label: 'بررسی رسیدها', to: '/admin/receipts' },
-  { key: 'subscription', label: 'اشتراک', to: '/admin/subscription' },
+  // { key: 'subscription', label: 'اشتراک', to: '/admin/subscription' },
   { key: 'profile', label: 'پروفایل من', to: '/admin/profile' },
 ];
 
